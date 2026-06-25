@@ -1,0 +1,46 @@
+{
+  "mqtt": {
+    "broker": "broker.hivemq.com",
+    "port": 1883,
+    "keepalive": 60,
+    "username": "",
+    "password": "",
+    "client_id_prefix": "smart-campus-simulator",
+    "base_topic": "campus"
+  },
+  "simulation": {
+    "publish_interval_seconds": 5,
+    "wireless_model": "IEEE 802.15.4 / Zigbee-like",
+    "packet_loss_rate": 0.05,
+    "random_delay_ms_min": 50,
+    "random_delay_ms_max": 350,
+    "energy_per_message_mwh": 0.018,
+    "battery_drain_per_message": 0.04
+  },
+  "devices": [
+    {
+      "deviceId": "classroom_101",
+      "building": "main_building",
+      "room": "classroom_101",
+      "initial_battery_level": 96
+    },
+    {
+      "deviceId": "lab_201",
+      "building": "engineering_building",
+      "room": "lab_201",
+      "initial_battery_level": 92
+    },
+    {
+      "deviceId": "office_301",
+      "building": "admin_building",
+      "room": "office_301",
+      "initial_battery_level": 88
+    },
+    {
+      "deviceId": "server_room_401",
+      "building": "it_building",
+      "room": "server_room_401",
+      "initial_battery_level": 99
+    }
+  ]
+}
