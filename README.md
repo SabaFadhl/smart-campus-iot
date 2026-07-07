@@ -226,6 +226,11 @@ After clicking Deploy, open the dashboard:
 http://localhost:1880/ui
 ```
 
+Here is a preview of the live telemetry dashboard:
+
+![Smart Campus Node-RED Dashboard](dashboard/screenshots/dashboard_live.png)
+
+
 ## 13. Tests
 
 The test plan is available in:
