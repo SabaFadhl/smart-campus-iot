@@ -137,16 +137,17 @@ def on_message(client, userdata, message):
     derived = calculate_derived_values(payload)
     alerts = evaluate_alerts(payload)
     device_id = safe_text(payload["deviceId"])
+    label = safe_text(payload.get("label", payload["deviceId"]))
 
     print(
-        f"[DATA] {device_id} | temp={payload['temperature']}C "
+        f"[DATA] {label} | temp={payload['temperature']}C "
         f"humidity={payload['humidity']}% occupancy={payload['occupancy']} "
         f"comfort_index={derived['comfort_index']} "
         f"air_quality={derived['air_quality_status']}"
     )
 
     for alert in alerts:
-        print(f"[ALERT] {device_id}: {alert}")
+        print(f"[ALERT] {label}: {alert}")
 
 
 def main():

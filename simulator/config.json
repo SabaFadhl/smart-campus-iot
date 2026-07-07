@@ -19,28 +19,53 @@
   },
   "devices": [
     {
-      "deviceId": "classroom_101",
-      "building": "main_building",
-      "room": "classroom_101",
+      "deviceId": "hall_1_1",
+      "label": "Hall 1.1",
+      "building": "floor_1",
+      "room": "hall_1_1",
       "initial_battery_level": 96
     },
     {
-      "deviceId": "lab_201",
+      "deviceId": "hall_1_2",
+      "label": "Hall 1.2",
+      "building": "floor_1",
+      "room": "hall_1_2",
+      "initial_battery_level": 94
+    },
+    {
+      "deviceId": "hall_1_3",
+      "label": "Hall 1.3",
+      "building": "floor_1",
+      "room": "hall_1_3",
+      "initial_battery_level": 91
+    },
+    {
+      "deviceId": "hall_1_4",
+      "label": "Hall 1.4",
+      "building": "floor_1",
+      "room": "hall_1_4",
+      "initial_battery_level": 89
+    },
+    {
+      "deviceId": "server_room",
+      "label": "Server Room",
+      "building": "it_building",
+      "room": "server_room",
+      "initial_battery_level": 99
+    },
+    {
+      "deviceId": "lab1",
+      "label": "Lab 1",
       "building": "engineering_building",
-      "room": "lab_201",
+      "room": "lab1",
       "initial_battery_level": 92
     },
     {
-      "deviceId": "office_301",
+      "deviceId": "office1",
+      "label": "Office 1",
       "building": "admin_building",
-      "room": "office_301",
+      "room": "office1",
       "initial_battery_level": 88
-    },
-    {
-      "deviceId": "server_room_401",
-      "building": "it_building",
-      "room": "server_room_401",
-      "initial_battery_level": 99
     }
   ]
 }

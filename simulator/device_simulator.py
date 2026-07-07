@@ -45,6 +45,7 @@ def build_topic(base_topic, building, room, device_id):
 class VirtualDevice:
     def __init__(self, device_config, simulation_config):
         self.device_id = device_config["deviceId"]
+        self.label = device_config.get("label", device_config["deviceId"])
         self.building = device_config["building"]
         self.room = device_config["room"]
         self.battery_level = float(device_config.get("initial_battery_level", 100))
@@ -52,20 +53,29 @@ class VirtualDevice:
         self.total_energy_mwh = 0.0
 
     def generate_sensor_values(self):
-        """Generate understandable ranges with occasional abnormal values."""
-        if self.device_id == "server_room_401":
+        """Generate realistic sensor ranges per device type."""
+        if self.device_id == "server_room":
+            # Server room: higher temps, almost no occupancy, strict air quality
             temperature = random.uniform(21, 39)
             occupancy = random.choice([0, 0, 0, 1])
             light_level = random.uniform(20, 75)
             air_quality = random.uniform(40, 135)
-        elif self.device_id == "lab_201":
+        elif self.device_id == "lab1":
+            # Lab: moderate temps, up to 12 students, higher air quality risk
             temperature = random.uniform(22, 36.5)
             occupancy = random.randint(0, 12)
             light_level = random.uniform(35, 95)
             air_quality = random.uniform(55, 150)
+        elif self.device_id == "office1":
+            # Office: comfortable range, small occupancy
+            temperature = random.uniform(20, 30)
+            occupancy = random.randint(0, 8)
+            light_level = random.uniform(30, 90)
+            air_quality = random.uniform(30, 100)
         else:
-            temperature = random.uniform(20, 34)
-            occupancy = random.randint(0, 35)
+            # Halls 1.1 - 1.4: lecture halls, up to 40 students
+            temperature = random.uniform(20, 35)
+            occupancy = random.randint(0, 40)
             light_level = random.uniform(10, 100)
             air_quality = random.uniform(35, 125)
 
@@ -109,6 +119,7 @@ class VirtualDevice:
         status = "LOW_BATTERY" if self.battery_level < 20 else "OK"
         payload = {
             "deviceId": self.device_id,
+            "label": self.label,
             "building": self.building,
             "room": self.room,
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -170,7 +181,7 @@ def main():
 
                 client.publish(topic, json.dumps(payload), qos=0)
                 print(
-                    f"[PUBLISH] {topic} | temp={payload['temperature']}C "
+                    f"[PUBLISH] [{device.label}] {topic} | temp={payload['temperature']}C "
                     f"humidity={payload['humidity']}% battery={payload['battery_level']}%"
                 )
 
