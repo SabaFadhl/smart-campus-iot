@@ -92,8 +92,8 @@ def build_final_report():
         "University: Sana'a University\n"
         "Supervisor: Dr. Ammar Zahary\n\n"
         "Team Members:\n"
-        "1. ___________________________\n"
-        "2. ___________________________\n\n"
+        "1. Osama Haider\n"
+        "2. Saba Al-wesabi\n\n"
         "Date: July 2026"
     ).font.size = Pt(12)
     doc.add_page_break()
@@ -349,8 +349,8 @@ def build_proposal():
         "Course: Internet of Things  |  Program: Master of IT\n"
         "Supervisor: Dr. Ammar Zahary  |  Sana'a University\n\n"
         "Team Members:\n"
-        "1. ___________________________\n"
-        "2. ___________________________"
+        "1. Osama Haider\n"
+        "2. Saba Al-wesabi"
     ).font.size = Pt(11)
     doc.add_paragraph()
 
@@ -455,7 +455,7 @@ def build_presentation_doc():
                 "Smart Campus IoT Simulation and Analytics Platform",
                 "Course: Internet of Things | Master of IT",
                 "Supervisor: Dr. Ammar Zahary | Sana'a University",
-                "Team Members: 1. _____________  2. _____________",
+                "Team Members: 1. Osama Haider     2. Saba Al-wesabi",
                 "Date: July 2026",
             ]
         },
