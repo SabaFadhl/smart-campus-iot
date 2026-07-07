@@ -13,14 +13,14 @@
             --primary: #4f46e5;
             --primary-hover: #4338ca;
             --secondary: #ec4899;
-            --dark-bg: #0b0f19;
-            --card-bg: rgba(17, 24, 39, 0.7);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
         }
 
         * {
@@ -32,13 +32,13 @@
         }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: var(--light-bg);
             color: var(--text-main);
             line-height: 1.7;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 45%);
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 45%);
             background-attachment: fixed;
         }
 
@@ -47,14 +47,14 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
+            background: var(--light-bg);
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(79, 70, 229, 0.4);
+            background: rgba(79, 70, 229, 0.2);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(79, 70, 229, 0.6);
+            background: rgba(79, 70, 229, 0.4);
         }
 
         /* واجهة التنقل الجانبية */
@@ -65,7 +65,7 @@
 
         .sidebar {
             width: 320px;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(255, 255, 255, 0.9);
             border-left: 1px solid var(--border-color);
             position: fixed;
             height: 100vh;
@@ -79,13 +79,13 @@
             text-align: center;
             margin-bottom: 2.5rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .sidebar-header h2 {
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -123,9 +123,10 @@
         }
 
         .nav-link:hover, .nav-link.active {
-            color: #fff;
-            background: rgba(79, 70, 229, 0.15);
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.08);
             border-right: 4px solid var(--primary);
+            font-weight: 700;
         }
 
         /* المحتوى الرئيسي */
@@ -136,7 +137,7 @@
         }
 
         .header-banner {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 3rem;
@@ -153,7 +154,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.03) 100%);
+            background: linear-gradient(45deg, transparent 60%, rgba(15, 23, 42, 0.02) 100%);
             pointer-events: none;
         }
 
@@ -161,8 +162,7 @@
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 1rem;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            color: var(--text-main);
         }
 
         .header-banner p.subtitle {
@@ -179,10 +179,11 @@
         }
 
         .team-meta span {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.03);
             padding: 0.4rem 1rem;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
         }
 
         .section-card {
@@ -192,17 +193,17 @@
             padding: 2.5rem;
             margin-bottom: 3rem;
             backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
         }
 
         .section-title {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.75rem;
         }
 
@@ -229,15 +230,16 @@
         }
 
         .styled-table thead tr {
-            background-color: rgba(79, 70, 229, 0.25);
-            color: #ffffff;
+            background-color: #f1f5f9;
+            color: var(--text-main);
             text-align: right;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .styled-table th, .styled-table td {
             padding: 12px 15px;
             border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
         }
 
         .styled-table tbody tr {
@@ -245,40 +247,40 @@
         }
 
         .styled-table tbody tr:hover {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(15, 23, 42, 0.02);
         }
 
         /* المعالجات البصرية ومربعات الشرح */
         .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            border-right: 4px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.08);
+            border-right: 4px solid #2563eb;
             padding: 1.25rem;
             border-radius: 8px;
             margin: 1.5rem 0;
-            color: #93c5fd;
+            color: #1e40af;
         }
 
         .alert-box {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.08);
             border-right: 4px solid var(--danger);
             padding: 1.25rem;
             border-radius: 8px;
             margin: 1.5rem 0;
-            color: #fca5a5;
+            color: #991b1b;
         }
 
         .success-box {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.08);
             border-right: 4px solid var(--success);
             padding: 1.25rem;
             border-radius: 8px;
             margin: 1.5rem 0;
-            color: #a7f3d0;
+            color: #065f46;
         }
 
         /* كتل الأكواد البرمجية */
         pre {
-            background: #060913 !important;
+            background: #f1f5f9 !important;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1.25rem;
@@ -291,7 +293,7 @@
         code {
             font-family: 'Consolas', 'Courier New', Courier, monospace;
             font-size: 0.9rem;
-            color: #a5b4fc;
+            color: #4f46e5;
         }
 
         /* قائمة المصطلحات */
@@ -303,7 +305,7 @@
         }
 
         .glossary-card {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(15, 23, 42, 0.01);
             border: 1px solid var(--border-color);
             padding: 1.5rem;
             border-radius: 12px;
@@ -316,7 +318,7 @@
         }
 
         .glossary-card h4 {
-            color: #fff;
+            color: var(--text-main);
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             display: flex;
@@ -326,7 +328,7 @@
 
         .glossary-card h4 span {
             font-size: 0.8rem;
-            background: rgba(79, 70, 229, 0.2);
+            background: rgba(79, 70, 229, 0.1);
             color: var(--primary);
             padding: 0.1rem 0.5rem;
             border-radius: 4px;
@@ -349,7 +351,7 @@
             display: flex;
             gap: 1.5rem;
             align-items: flex-start;
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(15, 23, 42, 0.01);
             border: 1px solid var(--border-color);
             padding: 1.5rem;
             border-radius: 12px;
@@ -369,7 +371,7 @@
         }
 
         .arch-step-body h4 {
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 0.25rem;
         }
 
@@ -435,7 +437,7 @@
                 <i class="fa-solid fa-lightbulb"></i> <b>السيناريو:</b> نقوم بمحاكاة 7 غرف وقاعات في الحرم الجامعي، ترسل بياناتها البيئية والحضور بصفة دورية (كل 5 ثوانٍ) لشبكة مركزية لتحليلها وتوليد تنبيهات فورية في حال حدوث خلل.
             </div>
 
-            <h4 style="color:#fff; margin-bottom: 1rem;">الغرف السبعة المراقبة وأهدافها:</h4>
+            <h4 style="margin-bottom: 1rem;">الغرف السبعة المراقبة وأهدافها:</h4>
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -516,7 +518,7 @@
                 <i class="fa-solid fa-check-double"></i> <b>لماذا Zigbee؟</b> أجهزة الاستشعار البيئية ترسل رسائل دورية صغيرة جداً (Payloads خفيفة) وتعمل عادة على بطاريات صغيرة. الـ Zigbee يوفر في استهلاك الطاقة بشكل هائل مقارنة بالـ Wi-Fi، كما أنه يعمل بكفاءة أكبر داخل الغرف مقارنة بتقنية LoRaWAN المخصصة للمساحات الشاسعة والمفتوحة (Outdoor).
             </div>
             
-            <h4 style="color:#fff; margin-bottom: 1rem;">محاكاة الشبكة اللاسلكية في الكود:</h4>
+            <h4 style="margin-bottom: 1rem;">محاكاة الشبكة اللاسلكية في الكود:</h4>
             <p style="color:var(--text-muted); margin-bottom: 1rem;">نقوم في الكود بمحاكاة عوائق الشبكة الحقيقية من خلال:</p>
             <ul style="margin-right:2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
                 <li><b>Packet Loss Rate:</b> احتمالية فقدان البيانات (5%) أثناء النقل.</li>
@@ -554,7 +556,7 @@
                 عند استقبال البيانات، يقوم الـ Subscriber بالعمليات التحليلية التالية:
             </p>
             
-            <h4 style="color:#fff; margin-bottom: 0.5rem;">أولاً: القيم المشتقة (Derived Values)</h4>
+            <h4 style="margin-bottom: 0.5rem;">أولاً: القيم المشتقة (Derived Values)</h4>
             <ul style="margin-right: 2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
                 <li><b>Comfort Index:</b> معادلة رياضية تدمج درجة الحرارة والرطوبة لتقدير مستوى راحة الأشخاص في الغرفة:<br>
                 <code>Comfort Index = Temperature + (Humidity / 100 * 5)</code></li>
@@ -562,7 +564,7 @@
                 <li><b>Occupancy Status:</b> تصنيف الغرفة هل هي فارغة (EMPTY) أم مشغولة (OCCUPIED).</li>
             </ul>
 
-            <h4 style="color:#fff; margin-bottom: 0.5rem;">ثانياً: قواعد الإنذار الخمسة (Alert Rules)</h4>
+            <h4 style="margin-bottom: 0.5rem;">ثانياً: قواعد الإنذار الخمسة (Alert Rules)</h4>
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -592,7 +594,7 @@
                         <td><code>Humidity > 80</code></td>
                         <td>مستويات رطوبة خانقة</td>
                     </tr>
-                    <tr style="color:#f39c12">
+                    <tr style="color:var(--warning)">
                         <td>Low Battery</td>
                         <td><code>Battery Level < 20</code></td>
                         <td>صيانة وقائية لتبديل بطارية الحساس</td>
@@ -605,7 +607,7 @@
         <section id="code" class="section-card">
             <h3 class="section-title"><i class="fa-solid fa-code"></i> 6. شرح الأكواد بالتفصيل</h3>
             
-            <h4 style="color:#fff;">أ) ملف المحاكي: <code>device_simulator.py</code></h4>
+            <h4>أ) ملف المحاكي: <code>device_simulator.py</code></h4>
             <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
                 هذا الملف مسؤول عن بدء اتصال MQTT، وقراءة إعدادات الحساسات السبعة، وتوليد القراءات البيئية ومحاكاة بطارية الـ Zigbee.
             </p>
@@ -645,7 +647,7 @@ class VirtualDevice:
         }
 </code></pre>
 
-            <h4 style="color:#fff; margin-top: 2rem;">ب) ملف الـ Subscriber: <code>subscriber.py</code></h4>
+            <h4 style="margin-top: 2rem;">ب) ملف الـ Subscriber: <code>subscriber.py</code></h4>
             <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
                 هذا الملف يشترك بالـ Broker، ويستقبل البيانات للتحقق منها وحساب القيم المشتقة والإنذارات.
             </p>
