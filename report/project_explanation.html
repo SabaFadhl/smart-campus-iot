@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل وشرح مشروع Smart Campus IoT</title>
+    <!-- خطوط جوجل العربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #ec4899;
+            --dark-bg: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* تنسيقات التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(79, 70, 229, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(79, 70, 229, 0.6);
+        }
+
+        /* واجهة التنقل الجانبية */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: rgba(15, 23, 42, 0.95);
+            border-left: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link i {
+            margin-left: 0.75rem;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: rgba(79, 70, 229, 0.15);
+            border-right: 4px solid var(--primary);
+        }
+
+        /* المحتوى الرئيسي */
+        .content {
+            margin-right: 320px;
+            padding: 3rem;
+            width: calc(100% - 320px);
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.03) 100%);
+            pointer-events: none;
+        }
+
+        .header-banner h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-banner p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+        }
+
+        .team-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .team-meta span {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title i {
+            margin-left: 0.75rem;
+            color: var(--primary);
+        }
+
+        .lead-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* الجداول المنسقة */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .styled-table thead tr {
+            background-color: rgba(79, 70, 229, 0.25);
+            color: #ffffff;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .styled-table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* المعالجات البصرية ومربعات الشرح */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-right: 4px solid #3b82f6;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: #93c5fd;
+        }
+
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-right: 4px solid var(--danger);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: #fca5a5;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-right: 4px solid var(--success);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: #a7f3d0;
+        }
+
+        /* كتل الأكواد البرمجية */
+        pre {
+            background: #060913 !important;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #a5b4fc;
+        }
+
+        /* قائمة المصطلحات */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .glossary-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .glossary-card h4 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .glossary-card h4 span {
+            font-size: 0.8rem;
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary);
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .glossary-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* الطبقات الهيكلية */
+        .arch-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .arch-step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .arch-step-num {
+            background: var(--primary);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .arch-step-body h4 {
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .arch-step-body p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* تصميم متوافق مع الموبايل */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            .content {
+                margin-right: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- قائمة التصفح الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>لوحة التوجيه</h2>
+            <p>Smart Campus IoT Guide</p>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#intro" class="nav-link active"><i class="fa-solid fa-house"></i> مقدمة وفكرة المشروع</a></li>
+            <li class="nav-item"><a href="#architecture" class="nav-link"><i class="fa-solid fa-network-wired"></i> معمارية الـ IoT</a></li>
+            <li class="nav-item"><a href="#wireless" class="nav-link"><i class="fa-solid fa-wifi"></i> الشبكة اللاسلكية (Zigbee)</a></li>
+            <li class="nav-item"><a href="#mqtt" class="nav-link"><i class="fa-solid fa-arrow-down-up-lock"></i> بروتوكول MQTT والـ Topics</a></li>
+            <li class="nav-item"><a href="#processing" class="nav-link"><i class="fa-solid fa-calculator"></i> معالجة البيانات والإنذارات</a></li>
+            <li class="nav-item"><a href="#code" class="nav-link"><i class="fa-solid fa-code"></i> شرح الكود بالتفصيل</a></li>
+            <li class="nav-item"><a href="#run" class="nav-link"><i class="fa-solid fa-play"></i> دليل تشغيل المشروع</a></li>
+            <li class="nav-item"><a href="#glossary" class="nav-link"><i class="fa-solid fa-book"></i> قاموس المصطلحات</a></li>
+        </ul>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="content">
+        <!-- البانر الرئيسي -->
+        <section class="header-banner">
+            <h1>دليل وشرح مشروع Smart Campus IoT</h1>
+            <p class="subtitle">شرح فني كامل ومبسط لكافة المفاهيم والأكواد والبروتوكولات البرمجية المستخدمة في منصة محاكاة الحرم الجامعي الذكي.</p>
+            <div class="team-meta">
+                <span><i class="fa-solid fa-users"></i> إعداد الطلاب: <b>Osama Haider & Saba Al-wesabi</b></span>
+                <span><i class="fa-solid fa-user-tie"></i> إشراف الدكتور: <b>د. عمار زاهري</b></span>
+                <span><i class="fa-solid fa-calendar"></i> يوليو 2026</span>
+            </div>
+        </section>
+
+        <!-- مقدمة المشروع -->
+        <section id="intro" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-house"></i> 1. فكرة المشروع والسيناريو</h3>
+            <p class="lead-text">
+                المشروع عبارة عن <b>منصة محاكاة بيئية ذكية متكاملة للحرم الجامعي (Smart Campus IoT Platform)</b>. يهدف لتطبيق مسار الـ IoT الكامل (Sensor Data Generation → Communication → Data Edge Processing → Dashboard & Alerts Visualization) دون الحاجة لعتاد حقيقي مكلف.
+            </p>
+            <div class="info-box">
+                <i class="fa-solid fa-lightbulb"></i> <b>السيناريو:</b> نقوم بمحاكاة 7 غرف وقاعات في الحرم الجامعي، ترسل بياناتها البيئية والحضور بصفة دورية (كل 5 ثوانٍ) لشبكة مركزية لتحليلها وتوليد تنبيهات فورية في حال حدوث خلل.
+            </div>
+
+            <h4 style="color:#fff; margin-bottom: 1rem;">الغرف السبعة المراقبة وأهدافها:</h4>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>اسم الغرفة</th>
+                        <th>المبنى التابع له</th>
+                        <th>الهدف الرئيسي من المراقبة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Hall 1.1 / 1.2 / 1.3 / 1.4</b></td>
+                        <td>Floor 1 (الدور الأول)</td>
+                        <td>مراقبة راحة الطلاب (النسب البيئية) وعدد الطلاب الحاضرين لمنع الازدحام.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Server Room</b></td>
+                        <td>IT Building (مبنى الـ IT)</td>
+                        <td>مراقبة درجة الحرارة الحرجة للغاية لحماية الخوادم والـ server racks من التلف الحراري.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Lab 1</b></td>
+                        <td>Engineering Building</td>
+                        <td>مراقبة جودة الهواء لضمان عدم وجود عوادم أو غازات تؤثر على الطلاب.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Office 1</b></td>
+                        <td>Admin Building</td>
+                        <td>مراقبة الحضور لتوفير الطاقة (إطفاء الإضاءة التلقائي عند فراغ المكتب).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- معمارية النظام -->
+        <section id="architecture" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-network-wired"></i> 2. معمارية الـ IoT للبرنامج</h3>
+            <p class="lead-text">يتبع مشروعنا المعمارية المعيارية للإنترنت الأشياء المكونة من أربعة طبقات رئيسية:</p>
+            
+            <div class="arch-steps">
+                <div class="arch-step">
+                    <div class="arch-step-num">1</div>
+                    <div class="arch-step-body">
+                        <h4>طبقة الإدراك والتحسس (Perception Layer)</h4>
+                        <p>تتمثل بالأجهزة الافتراضية السبعة في ملف <code>device_simulator.py</code> والتي تقوم بتوليد القراءات البرمجية بطريقة عشوائية مقيدة بنطاقات منطقية وواقعية.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">2</div>
+                    <div class="arch-step-body">
+                        <h4>طبقة الشبكة والاتصال (Network Layer)</h4>
+                        <p>تقوم بنقل البيانات باستخدام بروتوكول <b>MQTT</b> عبر وسيط نقل خارجي (HiveMQ Broker). تم إدراج نموذج محاكاة لاسلكي للـ <b>Zigbee</b> لتأكيد واقعية الشبكة.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">3</div>
+                    <div class="arch-step-body">
+                        <h4>طبقة المعالجة الطرفية (Processing Layer)</h4>
+                        <p>تتمثل بملف <code>subscriber.py</code>، حيث يتم تصفية البيانات، والتحقق من صحة المدخلات الأمنية والنوعية، وحساب المؤشرات المعقدة (derived values)، وفلترة التنبيهات.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">4</div>
+                    <div class="arch-step-body">
+                        <h4>طبقة التطبيقات والعرض (Application Layer)</h4>
+                        <p>لوحة التحكم المصممة في <b>Node-RED Dashboard</b> والتي تقدم واجهة رسومية تفاعلية لعرض البيانات والإنذارات الحية.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشبكة اللاسلكية -->
+        <section id="wireless" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-wifi"></i> 3. الاتصال اللاسلكي (Zigbee vs Others)</h3>
+            <p class="lead-text">
+                تم اعتماد محاكاة شبكة **Zigbee (IEEE 802.15.4)** نظراً لخصائصها المناسبة تماماً للمباني الذكية. 
+            </p>
+            <div class="success-box">
+                <i class="fa-solid fa-check-double"></i> <b>لماذا Zigbee؟</b> أجهزة الاستشعار البيئية ترسل رسائل دورية صغيرة جداً (Payloads خفيفة) وتعمل عادة على بطاريات صغيرة. الـ Zigbee يوفر في استهلاك الطاقة بشكل هائل مقارنة بالـ Wi-Fi، كما أنه يعمل بكفاءة أكبر داخل الغرف مقارنة بتقنية LoRaWAN المخصصة للمساحات الشاسعة والمفتوحة (Outdoor).
+            </div>
+            
+            <h4 style="color:#fff; margin-bottom: 1rem;">محاكاة الشبكة اللاسلكية في الكود:</h4>
+            <p style="color:var(--text-muted); margin-bottom: 1rem;">نقوم في الكود بمحاكاة عوائق الشبكة الحقيقية من خلال:</p>
+            <ul style="margin-right:2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
+                <li><b>Packet Loss Rate:</b> احتمالية فقدان البيانات (5%) أثناء النقل.</li>
+                <li><b>Random Delay:</b> تأخير عشوائي (50ms إلى 350ms) لمحاكاة تصادم البيانات في الهواء.</li>
+                <li><b>RSSI & LQI:</b> قوة إشارة وجودة اتصال متغيرتين.</li>
+                <li><b>Battery Depletion:</b> استهلاك تدريجي وعلمي للبطارية مع كل عملية إرسال.</li>
+            </ul>
+        </section>
+
+        <!-- بروتوكول MQTT -->
+        <section id="mqtt" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-arrow-down-up-lock"></i> 4. بروتوكول MQTT وهيكلية الـ Topics</h3>
+            <p class="lead-text">
+                يعتمد النظام على بروتوكول **MQTT** (Message Queuing Telemetry Transport) وهو بروتوكول خفيف الوزن يعمل بنظام **Publish/Subscribe**.
+            </p>
+            
+            <div class="info-box">
+                <i class="fa-solid fa-circle-info"></i> <b>الـ Topic Hierarchy المصمم:</b><br>
+                <code>campus/{building}/{room}/{deviceId}/telemetry</code><br><br>
+                <b>أمثلة للمواضيع الفعلية:</b><br>
+                • <code>campus/floor_1/hall_1_1/hall_1_1/telemetry</code><br>
+                • <code>campus/it_building/server_room/server_room/telemetry</code>
+            </div>
+
+            <p style="color: var(--text-muted);">
+                يسمح هذا الهيكل للـ Subscriber بالاشتراك مرة واحدة في جميع قراءات الحرم الجامعي باستخدام أسلوب الـ Wildcard:<br>
+                <code>campus/+/+/+/telemetry</code>
+            </p>
+        </section>
+
+        <!-- معالجة البيانات والإنذارات -->
+        <section id="processing" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-calculator"></i> 5. معالجة البيانات (Derived Values & Alerts)</h3>
+            <p class="lead-text">
+                عند استقبال البيانات، يقوم الـ Subscriber بالعمليات التحليلية التالية:
+            </p>
+            
+            <h4 style="color:#fff; margin-bottom: 0.5rem;">أولاً: القيم المشتقة (Derived Values)</h4>
+            <ul style="margin-right: 2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
+                <li><b>Comfort Index:</b> معادلة رياضية تدمج درجة الحرارة والرطوبة لتقدير مستوى راحة الأشخاص في الغرفة:<br>
+                <code>Comfort Index = Temperature + (Humidity / 100 * 5)</code></li>
+                <li><b>Air Quality Status:</b> تحليل مستوى جودة الهواء (Good &lt;= 80 | Moderate 81-120 | Poor &gt; 120).</li>
+                <li><b>Occupancy Status:</b> تصنيف الغرفة هل هي فارغة (EMPTY) أم مشغولة (OCCUPIED).</li>
+            </ul>
+
+            <h4 style="color:#fff; margin-bottom: 0.5rem;">ثانياً: قواعد الإنذار الخمسة (Alert Rules)</h4>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>الإنذار (Alert)</th>
+                        <th>الشرط البرمجي (Condition)</th>
+                        <th>الأهمية</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="color:var(--danger)">
+                        <td>High Temperature</td>
+                        <td><code>Temperature > 35</code></td>
+                        <td>عالية جداً (خاصة للـ Server Room)</td>
+                    </tr>
+                    <tr style="color:var(--warning)">
+                        <td>Empty room with lights on</td>
+                        <td><code>Occupancy == 0 AND Light Level > 60</code></td>
+                        <td>إهدار للطاقة في المكاتب والقاعات</td>
+                    </tr>
+                    <tr style="color:var(--danger)">
+                        <td>Poor Air Quality</td>
+                        <td><code>Air Quality > 120</code></td>
+                        <td>خطورة على سلامة الطلاب في المعمل</td>
+                    </tr>
+                    <tr style="color:var(--warning)">
+                        <td>Abnormal Humidity</td>
+                        <td><code>Humidity > 80</code></td>
+                        <td>مستويات رطوبة خانقة</td>
+                    </tr>
+                    <tr style="color:#f39c12">
+                        <td>Low Battery</td>
+                        <td><code>Battery Level < 20</code></td>
+                        <td>صيانة وقائية لتبديل بطارية الحساس</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- شرح الكود -->
+        <section id="code" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-code"></i> 6. شرح الأكواد بالتفصيل</h3>
+            
+            <h4 style="color:#fff;">أ) ملف المحاكي: <code>device_simulator.py</code></h4>
+            <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
+                هذا الملف مسؤول عن بدء اتصال MQTT، وقراءة إعدادات الحساسات السبعة، وتوليد القراءات البيئية ومحاكاة بطارية الـ Zigbee.
+            </p>
+            <pre><code># تعريف الـ Class الخاص بكل جهاز تحسس وهمي
+class VirtualDevice:
+    def __init__(self, device_config, simulation_config):
+        self.device_id = device_config["deviceId"]
+        self.label = device_config.get("label", device_config["deviceId"])
+        self.building = device_config["building"]
+        self.room = device_config["room"]
+        # تعيين نسبة البطارية الابتدائية
+        self.battery_level = float(device_config.get("initial_battery_level", 100))
+        self.simulation_config = simulation_config
+        self.total_energy_mwh = 0.0
+
+    def generate_sensor_values(self):
+        # النطاقات العشوائية والمنطقية لكل نوع غرفة
+        if self.device_id == "server_room":
+            temperature = random.uniform(21, 39) # درجات حرارة قد ترتفع للفحص
+            occupancy = random.choice([0, 0, 0, 1]) # غرفة السيرفر تكون فارغة عادة
+            light_level = random.uniform(20, 75)
+            air_quality = random.uniform(40, 135)
+        # ... بقية تصنيفات الغرف (المعمل، المكتب، القاعات)
+
+    def apply_zigbee_like_model(self):
+        # تأخير عشوائي لمحاكاة وقت إرسال الحزم في الشبكة
+        delay_ms = random.randint(50, 350)
+        time.sleep(delay_ms / 1000)
+        
+        # استهلاك طاقة البطارية مع كل إرسال
+        self.battery_level = max(0.0, self.battery_level - 0.04)
+        return {
+            "random_delay_ms": delay_ms,
+            "link_quality": random.randint(55, 100),
+            "rssi": random.randint(-88, -42),
+            "estimated_energy_consumption_mwh": round(self.total_energy_mwh, 4)
+        }
+</code></pre>
+
+            <h4 style="color:#fff; margin-top: 2rem;">ب) ملف الـ Subscriber: <code>subscriber.py</code></h4>
+            <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
+                هذا الملف يشترك بالـ Broker، ويستقبل البيانات للتحقق منها وحساب القيم المشتقة والإنذارات.
+            </p>
+            <pre><code># دالة التحقق من صحة البيانات (Security Validation)
+def validate_payload(payload):
+    # التأكد من عدم وجود حقول مفقودة
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            return False, f"missing field: {field}"
+
+    # منع البيانات المستحيلة أمنياً أو منطقياً
+    if payload["occupancy"] < 0:
+        return False, "occupancy cannot be negative"
+    if not 0 <= payload["battery_level"] <= 100:
+        return False, "battery must be between 0 and 100"
+        
+    return True, "valid"
+
+# عند استقبال أي رسالة MQTT
+def on_message(client, userdata, message):
+    try:
+        # فك تشفير محتوى JSON
+        payload = json.loads(message.payload.decode("utf-8"))
+    except json.JSONDecodeError:
+        return
+
+    # التحقق أمنياً
+    is_valid, reason = validate_payload(payload)
+    if not is_valid:
+        print(f"[REJECTED] {reason}")
+        return
+
+    # حساب القيم المشتقة والتنبيهات وطباعتها
+    derived = calculate_derived_values(payload)
+    alerts = evaluate_alerts(payload)
+    # طباعة ملخص البيانات والإنذارات الحالية
+</code></pre>
+        </section>
+
+        <!-- دليل تشغيل المشروع -->
+        <section id="run" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-play"></i> 7. دليل وخطوات تشغيل المشروع</h3>
+            
+            <div class="arch-steps">
+                <div class="arch-step">
+                    <div class="arch-step-num">1</div>
+                    <div class="arch-step-body">
+                        <h4>تجهيز البيئة الافتراضية وحزم العمل</h4>
+                        <p>افتح نافذة PowerShell واكتب الأوامر التالية لتثبيت الحزم المطلوبة (مثل paho-mqtt و python-docx):</p>
+                        <pre><code>python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</code></pre>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">2</div>
+                    <div class="arch-step-body">
+                        <h4>تشغيل مستقبل البيانات (Subscriber)</h4>
+                        <p>في نافذة PowerShell الأولى، ابدأ بتشغيل الـ subscriber ليبقى مستمعاً ومنتظراً للبيانات:</p>
+                        <pre><code>python .\processing\subscriber.py</code></pre>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">3</div>
+                    <div class="arch-step-body">
+                        <h4>تشغيل محاكي الأجهزة (Simulator)</h4>
+                        <p>في نافذة PowerShell ثانية، ابدأ تشغيل محاكاة الأجهزة لتبدأ ببث البيانات عبر الـ Broker:</p>
+                        <pre><code>python .\simulator\device_simulator.py</code></pre>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">4</div>
+                    <div class="arch-step-body">
+                        <h4>تشغيل واجهة الـ Node-RED Dashboard</h4>
+                        <p>افتح نافذة ثالثة وشغل Node-RED، ثم استورد الملف <code>node_red_flow.json</code> وافتح الرابط <code>http://localhost:1880/ui</code> لمشاهدة الشاشات التفاعلية.</p>
+                        <pre><code>node-red</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قاموس المصطلحات -->
+        <section id="glossary" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-book"></i> 8. قاموس المصطلحات الفنية</h3>
+            <p class="lead-text">توضيح مبسط لأهم المصطلحات التي قد يسألك عنها الدكتور أثناء المناقشة:</p>
+            
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h4>MQTT <span>Protocol</span></h4>
+                    <p>بروتوكول تواصل خفيف جداً لنقل البيانات في بيئات إنترنت الأشياء، مبني على فكرة النشر والاشتراك (Pub/Sub) بدلاً من طلب واستجابة HTTP.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>MQTT Broker <span>Server</span></h4>
+                    <p>الخادم أو الوسيط المركزي الذي يستقبل البيانات من الناشرين (Publishers) ويوزعها على المشتركين المهتمين (Subscribers).</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Payload <span>Data</span></h4>
+                    <p>محتوى الرسالة الفعلي (بيانات الحساس بصيغة JSON) المرسل عبر البروتوكول.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Zigbee / 802.15.4 <span>Network</span></h4>
+                    <p>تقنية اتصال لاسلكية شبكية (Mesh) داخلية، مصممة للمدى القصير واستهلاك الطاقة الشديد الانخفاض.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>RSSI & LQI <span>Wireless</span></h4>
+                    <p><b>RSSI:</b> مؤشر قوة الإشارة المستلمة بالديسيبل.<br><b>LQI:</b> مؤشر جودة الحزمة المستلمة ومدى خلوها من التشويش.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Derived Values <span>Analytics</span></h4>
+                    <p>البيانات التي لا تأتي مباشرة من الحساس وإنما يتم حسابها برمجياً في طبقة المعالجة مثل الـ Comfort Index.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // تغيير التنشيط في القائمة الجانبية بناء على التمرير
+    window.addEventListener('scroll', () => {
+        let scrollPosition = window.scrollY + 200;
+        document.querySelectorAll('section').forEach(section => {
+            if (scrollPosition >= section.offsetTop && scrollPosition < (section.offsetTop + section.offsetHeight)) {
+                let id = section.getAttribute('id');
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
