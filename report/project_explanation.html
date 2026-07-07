@@ -410,6 +410,7 @@
             <li class="nav-item"><a href="#mqtt" class="nav-link"><i class="fa-solid fa-arrow-down-up-lock"></i> بروتوكول MQTT والـ Topics</a></li>
             <li class="nav-item"><a href="#processing" class="nav-link"><i class="fa-solid fa-calculator"></i> معالجة البيانات والإنذارات</a></li>
             <li class="nav-item"><a href="#code" class="nav-link"><i class="fa-solid fa-code"></i> شرح الكود بالتفصيل</a></li>
+            <li class="nav-item"><a href="#nodered" class="nav-link"><i class="fa-solid fa-diagram-project"></i> شرح تدفق Node-RED والتشغيل</a></li>
             <li class="nav-item"><a href="#run" class="nav-link"><i class="fa-solid fa-play"></i> دليل تشغيل المشروع</a></li>
             <li class="nav-item"><a href="#glossary" class="nav-link"><i class="fa-solid fa-book"></i> قاموس المصطلحات</a></li>
         </ul>
@@ -432,7 +433,7 @@
         <section id="intro" class="section-card">
             <h3 class="section-title"><i class="fa-solid fa-house"></i> 1. فكرة المشروع والسيناريو</h3>
             <p class="lead-text">
-                المشروع عبارة عن <b>منصة محاكاة بيئية ذكية متكاملة للحرم الجامعي (Smart Campus IoT Platform)</b>. يهدف لتطبيق مسار الـ IoT الكامل (Sensor Data Generation → Communication → Data Edge Processing → Dashboard & Alerts Visualization) دون الحاجة لعتاد حقيقي مكلف.
+                المشروع عبارة عن <b>منصة محاكاة بيئية ذكية متكاملة للحرم الجامعي (Smart Campus IoT Platform)</b>. يهدف لتطبيق دورة حياة بيانات الـ IoT الكاملة: بدءاً من توليد بيانات الحساسات (Sensor Data Generation)، ثم نقل البيانات (Communication)، تليها معالجة البيانات على الحافة (Data Edge Processing)، وأخيراً عرض البيانات والتنبيهات على لوحة التحكم (Dashboard & Alerts Visualization) دون الحاجة لقطع إلكترونية حقيقية مكلفة.
             </p>
             <div class="info-box">
                 <i class="fa-solid fa-lightbulb"></i> <b>السيناريو:</b> نقوم بمحاكاة 7 غرف وقاعات في الحرم الجامعي، ترسل بياناتها البيئية والحضور بصفة دورية (كل 5 ثوانٍ) لشبكة مركزية لتحليلها وتوليد تنبيهات فورية في حال حدوث خلل.
@@ -509,35 +510,35 @@
         <!-- معمارية النظام -->
         <section id="architecture" class="section-card">
             <h3 class="section-title"><i class="fa-solid fa-network-wired"></i> 3. معمارية الـ IoT للبرنامج</h3>
-            <p class="lead-text">يتبع مشروعنا المعمارية المعيارية للإنترنت الأشياء المكونة من أربعة طبقات رئيسية:</p>
+            <p class="lead-text">يتبع مشروعنا المعمارية القياسية لإنترنت الأشياء والمكونة من أربع طبقات رئيسية (من الأسفل للأعلى):</p>
             
             <div class="arch-steps">
                 <div class="arch-step">
                     <div class="arch-step-num">1</div>
                     <div class="arch-step-body">
-                        <h4>طبقة الإدراك والتحسس (Perception Layer)</h4>
-                        <p>تتمثل بالأجهزة الافتراضية السبعة في ملف <code>device_simulator.py</code> والتي تقوم بتوليد القراءات البرمجية بطريقة عشوائية مقيدة بنطاقات منطقية وواقعية.</p>
+                        <h4>طبقة الإدراك والتحسس (Perception Layer - توليد البيانات)</h4>
+                        <p>وهي الطبقة المسؤولة عن جمع القراءات. في مشروعنا تمثلها الأجهزة السبعة الافتراضية في ملف <code>device_simulator.py</code> والتي تولد بيانات الحساسات البيئية تلقائياً بنطاقات مطابقة للواقع.</p>
                     </div>
                 </div>
                 <div class="arch-step">
                     <div class="arch-step-num">2</div>
                     <div class="arch-step-body">
-                        <h4>طبقة الشبكة والاتصال (Network Layer)</h4>
-                        <p>تقوم بنقل البيانات باستخدام بروتوكول <b>MQTT</b> عبر وسيط نقل خارجي (HiveMQ Broker). تم إدراج نموذج محاكاة لاسلكي للـ <b>Zigbee</b> لتأكيد واقعية الشبكة.</p>
+                        <h4>طبقة الشبكة والاتصال (Network Layer - نقل البيانات)</h4>
+                        <p>الطبقة المسؤولة عن نقل البيانات لاسلكياً. نستخدم بروتوكول <b>MQTT</b> عبر وسيط نقل خارجي عام (HiveMQ Broker)، مع إدراج نموذج محاكاة لشبكة <b>Zigbee</b> لتأكيد واقعية الشبكة اللاسلكية.</p>
                     </div>
                 </div>
                 <div class="arch-step">
                     <div class="arch-step-num">3</div>
                     <div class="arch-step-body">
-                        <h4>طبقة المعالجة الطرفية (Processing Layer)</h4>
-                        <p>تتمثل بملف <code>subscriber.py</code>، حيث يتم تصفية البيانات، والتحقق من صحة المدخلات الأمنية والنوعية، وحساب المؤشرات المعقدة (derived values)، وفلترة التنبيهات.</p>
+                        <h4>طبقة المعالجة والتحليل الطرفي (Processing Layer - معالجة الحافة)</h4>
+                        <p>الطبقة المسؤولة عن استلام البيانات وفلترتها. يتمثل بملف المستقبل <code>subscriber.py</code> حيث يقوم بالتحقق الأمني من صحة المدخلات، وحساب القيم المشتقة (Derived Values) كحالة الغرفة ومؤشر الراحة، وفلترة الإنذارات قبل عرضها.</p>
                     </div>
                 </div>
                 <div class="arch-step">
                     <div class="arch-step-num">4</div>
                     <div class="arch-step-body">
-                        <h4>طبقة التطبيقات والعرض (Application Layer)</h4>
-                        <p>لوحة التحكم المصممة في <b>Node-RED Dashboard</b> والتي تقدم واجهة رسومية تفاعلية لعرض البيانات والإنذارات الحية.</p>
+                        <h4>طبقة التطبيقات والعرض (Application Layer - واجهة المستخدم)</h4>
+                        <p>وهي الشاشة النهائية التي يتفاعل معها المستخدم. تتمثل بلوحة التحكم المصممة بـ <b>Node-RED Dashboard</b> لعرض القراءات والإنذارات الحية في الوقت الفعلي برسومات وعدادات ملونة.</p>
                     </div>
                 </div>
             </div>
@@ -547,56 +548,62 @@
         <section id="wireless" class="section-card">
             <h3 class="section-title"><i class="fa-solid fa-wifi"></i> 4. الاتصال اللاسلكي (Zigbee vs Others)</h3>
             <p class="lead-text">
-                تم اعتماد محاكاة شبكة **Zigbee (IEEE 802.15.4)** نظراً لخصائصها المناسبة تماماً للمباني الذكية. 
+                تم محاكاة شبكة اتصال **زيجبي اللاسلكية (Zigbee - IEEE 802.15.4)** لأنها الأنسب لبيئات المباني والغرف الذكية.
             </p>
             <div class="success-box">
-                <i class="fa-solid fa-check-double"></i> <b>لماذا Zigbee؟</b> أجهزة الاستشعار البيئية ترسل رسائل دورية صغيرة جداً (Payloads خفيفة) وتعمل عادة على بطاريات صغيرة. الـ Zigbee يوفر في استهلاك الطاقة بشكل هائل مقارنة بالـ Wi-Fi، كما أنه يعمل بكفاءة أكبر داخل الغرف مقارنة بتقنية LoRaWAN المخصصة للمساحات الشاسعة والمفتوحة (Outdoor).
+                <i class="fa-solid fa-check-double"></i> <b>لماذا اخترنا Zigbee؟</b><br>
+                الحساسات البيئية ترسل بيانات خفيفة وصغيرة جداً (Payloads) وتعمل على بطاريات جافة صغيرة. الـ **Zigbee** يستهلك طاقة ضئيلة جداً مقارنة بالـ **Wi-Fi** (الذي يستهلك طاقة كبيرة)، كما أن الـ Zigbee يغطي الغرف والجدران الداخلية بشكل ممتاز جداً مقارنة بتقنية **LoRaWAN** التي تُسخدم للمسافات البعيدة والمساحات الخارجية المفتوحة (Outdoor).
             </div>
             
-            <h4 style="margin-bottom: 1rem;">محاكاة الشبكة اللاسلكية في الكود:</h4>
-            <p style="color:var(--text-muted); margin-bottom: 1rem;">نقوم في الكود بمحاكاة عوائق الشبكة الحقيقية من خلال:</p>
+            <h4 style="margin-bottom: 1rem;">كيف قمنا بمحاكاة الشبكة اللاسلكية في الكود؟</h4>
+            <p style="color:var(--text-muted); margin-bottom: 1rem;">لمحاكاة المشاكل الواقعية التي تحدث للشبكات اللاسلكية في الحقيقة، أضفنا التالي في المحاكي:</p>
             <ul style="margin-right:2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
-                <li><b>Packet Loss Rate:</b> احتمالية فقدان البيانات (5%) أثناء النقل.</li>
-                <li><b>Random Delay:</b> تأخير عشوائي (50ms إلى 350ms) لمحاكاة تصادم البيانات في الهواء.</li>
-                <li><b>RSSI & LQI:</b> قوة إشارة وجودة اتصال متغيرتين.</li>
-                <li><b>Battery Depletion:</b> استهلاك تدريجي وعلمي للبطارية مع كل عملية إرسال.</li>
+                <li><b>معدل فقد البيانات (Packet Loss Rate):</b> احتمالية بنسبة (5%) أن تضيع الرسالة ولا تصل لمحاكاة التشويش.</li>
+                <li><b>التأخير العشوائي (Random Delay):</b> تأخير زمني بسيط (بين 50 إلى 350 مللي ثانية) لمحاكاة وقت انتقال الموجات في الهواء وتصادم الإشارات.</li>
+                <li><b>قوة وجودة الإشارة (RSSI & LQI):</b> قيم متغيرة لمحاكاة بعد الحساس عن نقطة الوصول أو وجود حوائط تعيق الإشارة.</li>
+                <li><b>استهلاك البطارية (Battery Depletion):</b> ينخفض شحن بطارية الحساس تدريجياً مع كل عملية إرسال رسالة لتوضيح أهمية الصيانة الدورية للأجهزة.</li>
             </ul>
         </section>
 
         <!-- بروتوكول MQTT -->
         <section id="mqtt" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-arrow-down-up-lock"></i> 5. بروتوكول MQTT وهيكلية الـ Topics</h3>
+            <h3 class="section-title"><i class="fa-solid fa-arrow-down-up-lock"></i> 5. بروتوكول نقل الرسائل MQTT وهيكلية العناوين (Topics)</h3>
             <p class="lead-text">
-                يعتمد النظام على بروتوكول **MQTT** (Message Queuing Telemetry Transport) وهو بروتوكول خفيف الوزن يعمل بنظام **Publish/Subscribe**.
+                النظام يعتمد بالكامل على بروتوكول **MQTT** (بروتوكول تواصل خفيف للأجهزة المحدودة) وهو يعمل بمبدأ <b>النشر والاشتراك (Publish/Subscribe)</b> بدلاً من طلب واستجابة الويب التقليدي (HTTP):
             </p>
+            <ul style="margin-right:2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
+                <li><b>الناشر (Publisher):</b> الحساس يرسل (ينشر) القراءات إلى عنوان معين.</li>
+                <li><b>المستقبل (Subscriber):</b> لوحة التحكم أو التطبيق يشترك في هذا العنوان ليستلم الرسائل فوراً.</li>
+                <li><b>الموضوع أو العنوان (Topic):</b> هو مسار نصي يشبه مجلدات الملفات لتحديد مكان البيانات.</li>
+            </ul>
             
             <div class="info-box">
-                <i class="fa-solid fa-circle-info"></i> <b>الـ Topic Hierarchy المصمم:</b><br>
-                <code>campus/{building}/{room}/{deviceId}/telemetry</code><br><br>
-                <b>أمثلة للمواضيع الفعلية:</b><br>
-                • <code>campus/floor_1/hall_1_1/hall_1_1/telemetry</code><br>
-                • <code>campus/it_building/server_room/server_room/telemetry</code>
+                <i class="fa-solid fa-circle-info"></i> <b>الهيكل الهرمي للمواضيع (Topic Hierarchy) المصمم للمشروع:</b><br>
+                <code>campus/{المبنى}/{الغرفة}/{معرف الحساس}/telemetry</code><br><br>
+                <b>أمثلة فعلية للمواضيع المستخدمة:</b><br>
+                • <code>campus/floor_1/hall_1_1/hall_1_1/telemetry</code> (حساس القاعة 1.1 في الدور الأول)<br>
+                • <code>campus/it_building/server_room/server_room/telemetry</code> (حساس غرفة السيرفر في مبنى التقنية)
             </div>
 
             <p style="color: var(--text-muted);">
-                يسمح هذا الهيكل للـ Subscriber بالاشتراك مرة واحدة في جميع قراءات الحرم الجامعي باستخدام أسلوب الـ Wildcard:<br>
-                <code>campus/+/+/+/telemetry</code>
+                <b>ميزة هذا الهيكل:</b> يتيح للمستقبل (Subscriber) الاشتراك بكلمة بحث شاملة أو جوكر (Wildcard) يرمز له بـ <code>+</code> لاستقبال جميع قراءات الحرم الجامعي بأمر واحد دون الحاجة للاشتراك في كل غرفة بشكل منفصل:<br>
+                <code>campus/+/+/+/telemetry</code> (استقبل من أي مبنى، وأي غرفة، وأي جهاز)
             </p>
         </section>
 
         <!-- معالجة البيانات والإنذارات -->
         <section id="processing" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-calculator"></i> 6. معالجة البيانات (Derived Values & Alerts)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-calculator"></i> 6. معالجة البيانات والإنذارات (Derived Values & Alerts)</h3>
             <p class="lead-text">
-                عند استقبال البيانات، يقوم الـ Subscriber بالعمليات التحليلية التالية:
+                عندما تصل الرسالة إلى برنامج الاستقبال والمراقبة (Subscriber)، لا يكتفي بطباعتها بل يقوم بمعالجة ذكية فورية عبر قاعدتين أساسيتين:
             </p>
             
-            <h4 style="margin-bottom: 0.5rem;">أولاً: القيم المشتقة (Derived Values)</h4>
+            <h4 style="margin-bottom: 0.5rem;">أولاً: استنتاج قيم إضافية غير مباشرة (Derived Values):</h4>
             <ul style="margin-right: 2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
-                <li><b>Comfort Index:</b> معادلة رياضية تدمج درجة الحرارة والرطوبة لتقدير مستوى راحة الأشخاص في الغرفة:<br>
-                <code>Comfort Index = Temperature + (Humidity / 100 * 5)</code></li>
-                <li><b>Air Quality Status:</b> تحليل مستوى جودة الهواء (Good &lt;= 80 | Moderate 81-120 | Poor &gt; 120).</li>
-                <li><b>Occupancy Status:</b> تصنيف الغرفة هل هي فارغة (EMPTY) أم مشغولة (OCCUPIED).</li>
+                <li><b>مؤشر الراحة البيئية (Comfort Index):</b> معادلة حسابية تدمج الحرارة والرطوبة لمعرفة هل الجو ملائم للبشر أم خانق:<br>
+                <code>Comfort Index = الحرارة + (الرطوبة / 100 * 5)</code></li>
+                <li><b>حالة جودة الهواء (Air Quality Status):</b> يقوم بتحويل رقم الحساس إلى تقييم نصي مفهوم (جيد Good إذا كان 80 أو أقل | متوسط Moderate بين 81 و120 | سيئ Poor إذا زاد عن 120).</li>
+                <li><b>حالة إشغال الغرفة (Occupancy Status):</b> يحدد تلقائياً هل الغرفة فارغة (EMPTY) إذا كان الحضور يساوي 0، أو مشغولة (OCCUPIED) إذا وجد حضور.</li>
             </ul>
 
             <h4 style="margin-bottom: 0.5rem;">ثانياً: قواعد الإنذار الخمسة (Alert Rules)</h4>
@@ -722,9 +729,72 @@ def on_message(client, userdata, message):
 </code></pre>
         </section>
 
+        <!-- شرح Node-RED والتشغيل خطوة بخطوة -->
+        <section id="nodered" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-diagram-project"></i> 8. شرح تدفق Node-RED والتشغيل خطوة بخطوة</h3>
+            <p class="lead-text">
+                في هذا القسم، سنشرح بالتفصيل كيف يعمل تدفق لوحة التحكم (Node-RED Flow) وماذا يحدث في الخلفية خطوة بخطوة منذ لحظة تشغيل الحساسات وحتى ظهور القراءات على الشاشة:
+            </p>
+
+            <h4 style="margin-bottom: 0.5rem;">أولاً: مكونات تدفق Node-RED (مترجمة ومبسطة):</h4>
+            <ul style="margin-right: 2rem; color:var(--text-muted); margin-bottom: 1.5rem;">
+                <li><b>عقدة الاستقبال (MQTT In Node):</b> تدعى <code>Campus Telemetry</code>. تتصل بـ HiveMQ Broker وتستمع للموضوع الشامل <code>campus/+/+/+/telemetry</code> لتلتقط أي بيانات مرسلة من أي مكان في الحرم الجامعي فوراً.</li>
+                <li><b>عقدة الفرز البرمجية (Function Node):</b> تدعى <code>Prepare dashboard values</code>. وهي عبارة عن كود جافاسكريبت صغير يقوم بفرز القراءات المستلمة (درجة حرارة، رطوبة، حضور، إضاءة) والتحقق من شروط الإنذارات، ثم يوزعها عبر 5 مخارج منفصلة لتحديث لوحة التحكم.</li>
+                <li><b>مقاييس درجات الحرارة والرطوبة والحضور (Gauges):</b> عدادات دائرية ملونة تتغير تلقائياً مع كل قراءة جديدة وتتغير ألوانها (أخضر للأمان، برتقالي للتنبيه، أحمر للخطر) لتسهيل الفهم البصري السريع.</li>
+                <li><b>جدول الإنذارات النصي (Alerts Text):</b> يعرض آخر إنذار تم رصده في أي غرفة من الغرف السبعة بشكل نصي واضح مع اسم الغرفة (مثال: <code>server_room: High temperature</code>).</li>
+                <li><b>الرسم البياني للحرارة (Temperature Chart):</b> يرسم منحنًى بيانياً حياً يعرض تغير درجات الحرارة على مدار الوقت لمتابعة الحالات ومقارنة الغرف.</li>
+            </ul>
+
+            <h4 style="margin-bottom: 0.5rem;">ثانياً: ماذا يحدث في الخلفية خطوة بخطوة عند التشغيل؟</h4>
+            <div class="arch-steps">
+                <div class="arch-step">
+                    <div class="arch-step-num">1</div>
+                    <div class="arch-step-body">
+                        <h4>الربط المبدئي بالوسيط (MQTT Connection)</h4>
+                        <p>بمجرد تشغيل الأكواد وبدء Node-RED، يتصل الجميع بخادم <b>HiveMQ Broker</b> العام عبر الإنترنت. يقوم الـ Subscriber وتدفق Node-RED بإبلاغ الوسيط بأنهما يريدان استلام أي رسائل تُنشر تحت الموضوع <code>campus/+/+/+/telemetry</code>.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">2</div>
+                    <div class="arch-step-body">
+                        <h4>توليد القراءات البيئية (Telemetry Generation)</h4>
+                        <p>يقوم محاكي الأجهزة <code>device_simulator.py</code> بتوليد قراءات عشوائية ولكن مدروسة ومنطقية لكل غرفة (درجة الحرارة، الرطوبة، عدد الحضور، جودة الهواء، نسبة الإضاءة) وتحديث نسبة بطارية الحساس اللاسلكي.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">3</div>
+                    <div class="arch-step-body">
+                        <h4>تغليف ونشر البيانات (JSON Publishing)</h4>
+                        <p>يقوم المحاكي بتحويل بيانات كل حساس إلى نص منظم بصيغة <b>JSON</b>، ثم يرسله (Publish) إلى موضوع خاص بالغرفة (مثلاً: <code>campus/floor_1/hall_1_1/hall_1_1/telemetry</code>) عبر بروتوكول MQTT، محاكياً في طريقه مشاكل وتأخيرات الشبكة اللاسلكية الحقيقية (Zigbee).</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">4</div>
+                    <div class="arch-step-body">
+                        <h4>توجيه الرسائل بالخادم (Message Routing)</h4>
+                        <p>يستقبل خادم HiveMQ الرسالة، وبما أنه يعلم أن كلاً من كود بايثون وتدفق Node-RED مهتمان بهذا الموضوع، فإنه يقوم بنسخ وتوزيع الرسالة إليهما فوراً (تستغرق هذه العملية أجزاءً بسيطة من الثانية).</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">5</div>
+                    <div class="arch-step-body">
+                        <h4>التحقق والمعالجة الطرفية (Edge Validation)</h4>
+                        <p>يستلم كود <code>subscriber.py</code> الرسالة، ويفحصها أمنياً ومنطقياً لمنع أي تلاعب، ثم يستنتج القيم غير المباشرة (مثل مؤشر الراحة وحالة الغرفة) ويطبع تنبيهات فورية على شاشة الكونسول إذا اكتشف مشكلة.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">6</div>
+                    <div class="arch-step-body">
+                        <h4>التحديث الفوري للوحة التحكم (Dashboard Update)</h4>
+                        <p>تستلم واجهة Node-RED نفس الرسالة، وتمررها لعقدة الفرز لتوجيه القيم، ويحدث تحديث مباشر لعدادات الحرارة والرطوبة والحضور، وتُرسم نقطة جديدة في المخطط البياني، ويظهر الإنذار النشط بشكل مرئي على لوحة التحكم الرسومية الملونة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- دليل تشغيل المشروع -->
         <section id="run" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-play"></i> 8. دليل وخطوات تشغيل المشروع بالتفصيل</h3>
+            <h3 class="section-title"><i class="fa-solid fa-play"></i> 9. دليل وخطوات تشغيل المشروع بالتفصيل</h3>
             <p class="lead-text">
                 اتبع الخطوات التالية لتشغيل بيئة المحاكاة بالكامل واستقبال البيانات وعرضها على لوحة التحكم الرسومية:
             </p>
@@ -819,33 +889,57 @@ node-red</code></pre>
 
         <!-- قاموس المصطلحات -->
         <section id="glossary" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-book"></i> 9. قاموس المصطلحات الفنية</h3>
-            <p class="lead-text">توضيح مبسط لأهم المصطلحات التي قد يسألك عنها الدكتور أثناء المناقشة:</p>
+            <h3 class="section-title"><i class="fa-solid fa-book"></i> 10. قاموس المصطلحات الفنية (English-Arabic Technical Glossary)</h3>
+            <p class="lead-text">توضيح مبسط باللغة العربية لأهم المصطلحات الإنجليزية المستخدمة في المشروع لتسهيل شرحها ومناقشتها مع الدكتور:</p>
             
             <div class="glossary-grid">
                 <div class="glossary-card">
-                    <h4>MQTT <span>Protocol</span></h4>
-                    <p>بروتوكول تواصل خفيف جداً لنقل البيانات في بيئات إنترنت الأشياء، مبني على فكرة النشر والاشتراك (Pub/Sub) بدلاً من طلب واستجابة HTTP.</p>
+                    <h4>MQTT <span>بروتوكول نقل الرسائل</span></h4>
+                    <p><b>معناه:</b> بروتوكول خفيف وسريع لنقل الرسائل في شبكات إنترنت الأشياء، مصمم ليعمل بكفاءة دون استهلاك كبير للإنترنت أو طاقة الأجهزة الحساسة.</p>
                 </div>
                 <div class="glossary-card">
-                    <h4>MQTT Broker <span>Server</span></h4>
-                    <p>الخادم أو الوسيط المركزي الذي يستقبل البيانات من الناشرين (Publishers) ويوزعها على المشتركين المهتمين (Subscribers).</p>
+                    <h4>MQTT Broker <span>خادم الوسيط المركزي</span></h4>
+                    <p><b>معناه:</b> الخادم أو "السيرفر" المركزي الذي يربط بين جميع الأجهزة. يستقبل الرسائل من الحساسات ويرسلها للتطبيقات المشتركة.</p>
                 </div>
                 <div class="glossary-card">
-                    <h4>Payload <span>Data</span></h4>
-                    <p>محتوى الرسالة الفعلي (بيانات الحساس بصيغة JSON) المرسل عبر البروتوكول.</p>
+                    <h4>Publisher <span>الناشر / المرسل</span></h4>
+                    <p><b>معناه:</b> هو الجهاز أو الكود البرمجي الذي يقوم بقياس البيانات وإرسالها (نشرها) إلى وسيط الـ MQTT.</p>
                 </div>
                 <div class="glossary-card">
-                    <h4>Zigbee / 802.15.4 <span>Network</span></h4>
-                    <p>تقنية اتصال لاسلكية شبكية (Mesh) داخلية، مصممة للمدى القصير واستهلاك الطاقة الشديد الانخفاض.</p>
+                    <h4>Subscriber <span>المستقبل / المشترك</span></h4>
+                    <p><b>معناه:</b> هو البرنامج أو لوحة التحكم التي تشترك في عنوان معين لاستقبال البيانات والإنذارات فور حدوثها.</p>
                 </div>
                 <div class="glossary-card">
-                    <h4>RSSI & LQI <span>Wireless</span></h4>
-                    <p><b>RSSI:</b> مؤشر قوة الإشارة المستلمة بالديسيبل.<br><b>LQI:</b> مؤشر جودة الحزمة المستلمة ومدى خلوها من التشويش.</p>
+                    <h4>Topic <span>العنوان / مسار الرسالة</span></h4>
+                    <p><b>معناه:</b> العنوان النصي (المسار) الذي يتم تصنيف البيانات تحته ليسهل العثور عليها وقراءتها بشكل منظم.</p>
                 </div>
                 <div class="glossary-card">
-                    <h4>Derived Values <span>Analytics</span></h4>
-                    <p>البيانات التي لا تأتي مباشرة من الحساس وإنما يتم حسابها برمجياً في طبقة المعالجة مثل الـ Comfort Index.</p>
+                    <h4>Payload <span>محتوى الرسالة الفعلي</span></h4>
+                    <p><b>معناه:</b> البيانات الحقيقية المحمولة داخل الرسالة (مثل قيم درجات الحرارة أو الحضور) وتُرسل عادة بصيغة نصية خفيفة تدعى JSON.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Zigbee <span>الشبكة اللاسلكية المحلية</span></h4>
+                    <p><b>معناه:</b> تقنية شبكات لاسلكية قصيرة المدى مخصصة للـ IoT، تمتاز باستهلاكها الشديد الانخفاض لطاقة البطاريات وكفاءتها داخل المباني.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>RSSI <span>قوة الإشارة اللاسلكية</span></h4>
+                    <p><b>معناه:</b> مقياس يوضح مدى قوة وصول الإشارة اللاسلكية لجهاز الاستشعار، وكلما كان الرقم أقرب للصفر بالديسيبل (مثل -45dBm) كان الإرسال أقوى.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>LQI <span>جودة الاتصال اللاسلكي</span></h4>
+                    <p><b>معناه:</b> مؤشر يقيس جودة ونقاء إشارة الاتصال وخلوها من التشويش أو تداخل الموجات (يتراوح بين 0 إلى 255).</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Comfort Index <span>مؤشر الراحة البيئية</span></h4>
+                    <p><b>معناه:</b> معادلة ندمج فيها درجة الحرارة مع الرطوبة لحساب مدى ملاءمة جو الغرفة وارتياح الأشخاص المتواجدين فيها.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Derived Values <span>القيم المشتقة حسابياً</span></h4>
+                    <p><b>معناه:</b> هي البيانات الإضافية التي يقوم البرنامج باستنتاجها برمجياً من القراءات المباشرة دون أن يرسلها الحساس نفسه.</p>
+                </div>
+                <div class="glossary-card">
+                    <h4>Wildcard <code>+</code> <span>العنوان أو الجوكر الشامل</span></h4>
+                    <p><b>معناه:</b> استخدام الرمز الشامل <code>+</code> للاشتراك في عدة مسارات فرعية معاً بأمر واحد (مثل استقبال بيانات كافة الغرف دفعة واحدة).</p>
                 </div>
             </div>
         </section>
