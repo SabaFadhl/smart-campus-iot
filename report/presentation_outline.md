@@ -6,18 +6,18 @@
 
 - Master of IT - Internet of Things
 - Simulation-only project
-- Team members: Add names here
-- Date: May 2026
+- Team members: Osama Haider, Saba Al-wesabi
+- Date: July 2026
 
 ## Slide 2: Problem and Scenario
 
 - Campus rooms need monitoring for comfort, safety, and energy efficiency.
 - Hardware sensors are replaced with Python virtual devices.
-- Four simulated locations:
-  - classroom_101
-  - lab_201
-  - office_301
-  - server_room_401
+- Seven simulated locations:
+  - Hall 1.1, Hall 1.2, Hall 1.3, Hall 1.4
+  - Server Room
+  - Lab 1
+  - Office 1
 
 ## Slide 3: System Architecture
 

@@ -6,8 +6,8 @@
 **Program:** Master of IT  
 **Project Title:** Smart Campus IoT Simulation and Analytics Platform  
 **Project Type:** Simulation-only IoT system  
-**Team Members:** Add student names here  
-**Date:** May 2026
+**Team Members:** Osama Haider, Saba Al-wesabi  
+**Date:** July 2026
 
 ---
 

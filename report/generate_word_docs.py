@@ -245,6 +245,20 @@ def build_final_report():
         "Dashboard URL: http://localhost:1880/ui"
     )
 
+    # Insert dashboard live screenshot if available
+    img_dir = REPORT_DIR.parent / "dashboard" / "screenshots"
+    dashboard_img = img_dir / "dashboard_live.png"
+    if dashboard_img.exists():
+        set_heading(doc, "Dashboard Visualization", 2)
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.add_run().add_picture(str(dashboard_img), width=Inches(5.5))
+        caption = doc.add_paragraph()
+        caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        caption.add_run("Figure 1: Smart Campus Node-RED Dashboard Live Telemetry").italic = True
+        doc.add_paragraph()
+
+
     # ── Security ──
     set_heading(doc, "7. Security and Reliability", 1)
     set_heading(doc, "Security Controls", 2)
@@ -276,6 +290,33 @@ def build_final_report():
             ["TC-4: Broker Disconnection", "Change broker address to invalid host",   "Connection failure reported",             "Pass (manual)"],
         ]
     )
+    # Insert testing console output screenshots if available
+    img_dir = REPORT_DIR.parent / "dashboard" / "screenshots"
+    sim_img = img_dir / "simulator_run.png"
+    sub_img = img_dir / "subscriber_run.png"
+
+    if sim_img.exists() or sub_img.exists():
+        set_heading(doc, "Execution and Test Outputs", 2)
+        
+        if sim_img.exists():
+            doc.add_paragraph("Virtual Device Simulator Execution Output:")
+            p_sim = doc.add_paragraph()
+            p_sim.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_sim.add_run().add_picture(str(sim_img), width=Inches(5.5))
+            caption_sim = doc.add_paragraph()
+            caption_sim.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            caption_sim.add_run("Figure 2: Python Virtual Device Simulator Console").italic = True
+            doc.add_paragraph()
+
+        if sub_img.exists():
+            doc.add_paragraph("MQTT Subscriber and Analytics Processor Output:")
+            p_sub = doc.add_paragraph()
+            p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_sub.add_run().add_picture(str(sub_img), width=Inches(5.5))
+            caption_sub = doc.add_paragraph()
+            caption_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            caption_sub.add_run("Figure 3: Python MQTT Subscriber & Alerts Console").italic = True
+            doc.add_paragraph()
 
     # ── Challenges ──
     set_heading(doc, "9. Challenges and Limitations", 1)
