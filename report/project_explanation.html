@@ -405,6 +405,7 @@
         <ul class="nav-list">
             <li class="nav-item"><a href="#intro" class="nav-link active"><i class="fa-solid fa-house"></i> مقدمة وفكرة المشروع</a></li>
             <li class="nav-item"><a href="#tools" class="nav-link"><i class="fa-solid fa-toolbox"></i> الأدوات والتقنيات المستخدمة</a></li>
+            <li class="nav-item"><a href="#init" class="nav-link"><i class="fa-solid fa-folder-plus"></i> خطوات إنشاء وهيكلة المشروع</a></li>
             <li class="nav-item"><a href="#architecture" class="nav-link"><i class="fa-solid fa-network-wired"></i> معمارية الـ IoT</a></li>
             <li class="nav-item"><a href="#wireless" class="nav-link"><i class="fa-solid fa-wifi"></i> الشبكة اللاسلكية (Zigbee)</a></li>
             <li class="nav-item"><a href="#mqtt" class="nav-link"><i class="fa-solid fa-arrow-down-up-lock"></i> بروتوكول MQTT والـ Topics</a></li>
@@ -507,9 +508,67 @@
             </div>
         </section>
 
+        <!-- خطوات إنشاء وهيكلة المشروع -->
+        <section id="init" class="section-card">
+            <h3 class="section-title"><i class="fa-solid fa-folder-plus"></i> 3. خطوات إنشاء وهيكلة المشروع من البداية</h3>
+            <p class="lead-text">
+                لبناء المشروع بشكل منظم واحترافي من الصفر، قمنا باتباع الخطوات العملية التالية لتهيئة بيئة العمل وإنشاء الملفات والمجلدات:
+            </p>
+            
+            <div class="arch-steps">
+                <div class="arch-step">
+                    <div class="arch-step-num">1</div>
+                    <div class="arch-step-body">
+                        <h4>إنشاء المجلدات الرئيسية للمشروع (Project Structure)</h4>
+                        <p>قمنا بفتح نافذة <b>PowerShell</b> ونفذنا الأوامر التالية لإنشاء الهيكل الهرمي للمجلدات دفعة واحدة:</p>
+                        <pre><code># إنشاء المجلد الرئيسي والمجلدات الفرعية
+New-Item -ItemType Directory -Force -Path smart-campus-iot\simulator
+New-Item -ItemType Directory -Force -Path smart-campus-iot\processing
+New-Item -ItemType Directory -Force -Path smart-campus-iot\dashboard
+New-Item -ItemType Directory -Force -Path smart-campus-iot\dashboard\screenshots
+New-Item -ItemType Directory -Force -Path smart-campus-iot\tests
+New-Item -ItemType Directory -Force -Path smart-campus-iot\report</code></pre>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">2</div>
+                    <div class="arch-step-body">
+                        <h4>إنشاء ملفات التكوين والتبعيات (Dependencies & Configuration)</h4>
+                        <p>قمنا بإنشاء الملفات الأساسية التالية في المجلد الرئيسي:</p>
+                        <ul style="margin-right: 2rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            <li><b><code>requirements.txt</code>:</b> ملف نصي كتبنا فيه أسماء المكتبات الخارجية المطلوبة للمشروع مثل مكتبة MQTT (<code>paho-mqtt</code>) ومكتبة معالجة النصوص (<code>python-docx</code>).</li>
+                            <li><b><code>.gitignore</code>:</b> ملف لإخفاء ملفات البيئة الافتراضية وحزم بايثون المؤقتة عن التتبع ليبقى المستودع نظيفاً.</li>
+                            <li><b><code>config.json</code>:</b> (داخل مجلد simulator) ملف يحتوي على كافة الإعدادات الثابتة لبيانات الحساسات وعناوين الـ MQTT ونسب البطارية.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">3</div>
+                    <div class="arch-step-body">
+                        <h4>كتابة كود المحاكاة وإرسال البيانات (The Simulator Code)</h4>
+                        <p>قمنا بإنشاء وكتابة الملف <code>simulator/device_simulator.py</code> وهو المسؤول عن قراءة ملف الإعدادات وإنشاء أجهزة استشعار افتراضية تبث رسائلها المشفرة دورياً عبر بروتوكول MQTT.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">4</div>
+                    <div class="arch-step-body">
+                        <h4>كتابة كود المستقبل والتحليلات (The Subscriber Code)</h4>
+                        <p>قمنا بإنشاء وكتابة الملف <code>processing/subscriber.py</code> وهو البرنامج الذي يعمل على الحافة (Edge Node) ويقوم بالاستماع المستمر للموضوع، التحقق أمنياً من سلامة الرسائل، وحساب مؤشرات الراحة وعرض الإنذارات.</p>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-step-num">5</div>
+                    <div class="arch-step-body">
+                        <h4>تصميم لوحة التحكم التفاعلية (Node-RED Flow)</h4>
+                        <p>قمنا بتشغيل واجهة Node-RED ورسم التدفق بصرياً لربط عقدة الـ MQTT بمقاييس ومخططات العرض، ثم قمنا بتصدير هذا التدفق وحفظه في ملف <code>dashboard/node_red_flow.json</code> لسهولة استيراده وتشغيله في أي مكان.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- معمارية النظام -->
         <section id="architecture" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-network-wired"></i> 3. معمارية الـ IoT للبرنامج</h3>
+            <h3 class="section-title"><i class="fa-solid fa-network-wired"></i> 4. معمارية الـ IoT للبرنامج</h3>
             <p class="lead-text">يتبع مشروعنا المعمارية القياسية لإنترنت الأشياء والمكونة من أربع طبقات رئيسية (من الأسفل للأعلى):</p>
             
             <div class="arch-steps">
@@ -546,7 +605,7 @@
 
         <!-- الشبكة اللاسلكية -->
         <section id="wireless" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-wifi"></i> 4. الاتصال اللاسلكي (Zigbee vs Others)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-wifi"></i> 5. الاتصال اللاسلكي (Zigbee vs Others)</h3>
             <p class="lead-text">
                 تم محاكاة شبكة اتصال **زيجبي اللاسلكية (Zigbee - IEEE 802.15.4)** لأنها الأنسب لبيئات المباني والغرف الذكية.
             </p>
@@ -567,7 +626,7 @@
 
         <!-- بروتوكول MQTT -->
         <section id="mqtt" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-arrow-down-up-lock"></i> 5. بروتوكول نقل الرسائل MQTT وهيكلية العناوين (Topics)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-arrow-down-up-lock"></i> 6. بروتوكول نقل الرسائل MQTT وهيكلية العناوين (Topics)</h3>
             <p class="lead-text">
                 النظام يعتمد بالكامل على بروتوكول **MQTT** (بروتوكول تواصل خفيف للأجهزة المحدودة) وهو يعمل بمبدأ <b>النشر والاشتراك (Publish/Subscribe)</b> بدلاً من طلب واستجابة الويب التقليدي (HTTP):
             </p>
@@ -593,7 +652,7 @@
 
         <!-- معالجة البيانات والإنذارات -->
         <section id="processing" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-calculator"></i> 6. معالجة البيانات والإنذارات (Derived Values & Alerts)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-calculator"></i> 7. معالجة البيانات والإنذارات (Derived Values & Alerts)</h3>
             <p class="lead-text">
                 عندما تصل الرسالة إلى برنامج الاستقبال والمراقبة (Subscriber)، لا يكتفي بطباعتها بل يقوم بمعالجة ذكية فورية عبر قاعدتين أساسيتين:
             </p>
@@ -647,12 +706,19 @@
 
         <!-- شرح الكود -->
         <section id="code" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-code"></i> 7. شرح الأكواد بالتفصيل</h3>
+            <h3 class="section-title"><i class="fa-solid fa-code"></i> 8. شرح الأكواد بالتفصيل</h3>
             
             <h4>أ) ملف المحاكي: <code>device_simulator.py</code></h4>
             <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
-                هذا الملف مسؤول عن بدء اتصال MQTT، وقراءة إعدادات الحساسات السبعة، وتوليد القراءات البيئية ومحاكاة بطارية الـ Zigbee.
+                هذا الملف مسؤول عن قراءة إعدادات الأجهزة، وبدء اتصال MQTT، وتوليد القراءات ومحاكاة الشبكة اللاسلكية.
             </p>
+            <div class="info-box" style="margin-top: 0.5rem; margin-bottom: 1rem;">
+                <i class="fa-solid fa-gears"></i> <b>كيف يبدأ تشغيل كود المحاكي من الصفر؟</b><br>
+                1. <b>دالة البداية <code>main()</code>:</b> تقوم أولاً بتحميل إعدادات الأجهزة والعناوين من ملف التكوين <code>config.json</code>.<br>
+                2. <b>الاتصال بـ MQTT:</b> يتم إنشاء عميل MQTT وتحديد خادم HiveMQ كعنوان للاتصال، ثم استدعاء <code>client.loop_start()</code> لتشغيل خيط استقبال الأحداث في الخلفية.<br>
+                3. <b>تهيئة الحساسات:</b> يتم إنشاء كائن فريد <code>VirtualDevice</code> لكل حساس من الحساسات السبعة لتتبع قيم بطاريته وموقعه.<br>
+                4. <b>حلقة الإرسال اللانهائية <code>while True</code>:</b> يدخل البرنامج في تكرار مستمر كل 5 ثوانٍ، يمر خلاله على كل جهاز، ويولد له قيم عشوائية ذكية، ثم يرسلها بصيغة JSON، مع محاكاة نسبة فقدان حزم قدرها 5% لإثبات واقعية الشبكة اللاسلكية.
+            </div>
             <pre><code># تعريف الـ Class الخاص بكل جهاز تحسس وهمي
 class VirtualDevice:
     def __init__(self, device_config, simulation_config):
@@ -691,8 +757,14 @@ class VirtualDevice:
 
             <h4 style="margin-top: 2rem;">ب) ملف الـ Subscriber: <code>subscriber.py</code></h4>
             <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
-                هذا الملف يشترك بالـ Broker، ويستقبل البيانات للتحقق منها وحساب القيم المشتقة والإنذارات.
+                هذا الملف يشترك بالـ Broker، ويستقبل البيانات للتحقق منها وحساب القيم المشتقة وتوليد التنبيهات.
             </p>
+            <div class="info-box" style="margin-top: 0.5rem; margin-bottom: 1rem;">
+                <i class="fa-solid fa-gears"></i> <b>كيف يبدأ تشغيل كود المستقبل من الصفر؟</b><br>
+                1. <b>إعداد الاتصال:</b> يتم إنشاء عميل MQTT وربط دالتين أساسيتين للأحداث: دالة عند الاتصال بالخادم (<code>on_connect</code>)، ودالة عند استلام أي رسالة جديدة (<code>on_message</code>).<br>
+                2. <b>الاتصال والاشتراك:</b> يتصل بخادم HiveMQ، وفور نجاح الاتصال، يشترك تلقائياً في العنوان العام <code>campus/+/+/+/telemetry</code>.<br>
+                3. <b>حلقة الاستماع اللانهائية <code>loop_forever()</code>:</b> يدخل البرنامج في حلقة مستمرة تجعله مستيقظاً ومستمعاً للشبكة بشكل دائم بانتظار وصول أي رسالة ليقوم بفحصها ومعالجتها فوراً.
+            </div>
             <pre><code># دالة التحقق من صحة البيانات (Security Validation)
 def validate_payload(payload):
     # التأكد من عدم وجود حقول مفقودة
@@ -731,7 +803,7 @@ def on_message(client, userdata, message):
 
         <!-- شرح Node-RED والتشغيل خطوة بخطوة -->
         <section id="nodered" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-diagram-project"></i> 8. شرح تدفق Node-RED والتشغيل خطوة بخطوة</h3>
+            <h3 class="section-title"><i class="fa-solid fa-diagram-project"></i> 9. شرح تدفق Node-RED والتشغيل خطوة بخطوة</h3>
             <p class="lead-text">
                 في هذا القسم، سنشرح بالتفصيل كيف يعمل تدفق لوحة التحكم (Node-RED Flow) وماذا يحدث في الخلفية خطوة بخطوة منذ لحظة تشغيل الحساسات وحتى ظهور القراءات على الشاشة:
             </p>
@@ -794,7 +866,7 @@ def on_message(client, userdata, message):
 
         <!-- دليل تشغيل المشروع -->
         <section id="run" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-play"></i> 9. دليل وخطوات تشغيل المشروع بالتفصيل</h3>
+            <h3 class="section-title"><i class="fa-solid fa-play"></i> 10. دليل وخطوات تشغيل المشروع بالتفصيل</h3>
             <p class="lead-text">
                 اتبع الخطوات التالية لتشغيل بيئة المحاكاة بالكامل واستقبال البيانات وعرضها على لوحة التحكم الرسومية:
             </p>
@@ -889,7 +961,7 @@ node-red</code></pre>
 
         <!-- قاموس المصطلحات -->
         <section id="glossary" class="section-card">
-            <h3 class="section-title"><i class="fa-solid fa-book"></i> 10. قاموس المصطلحات الفنية (English-Arabic Technical Glossary)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-book"></i> 11. قاموس المصطلحات الفنية (English-Arabic Technical Glossary)</h3>
             <p class="lead-text">توضيح مبسط باللغة العربية لأهم المصطلحات الإنجليزية المستخدمة في المشروع لتسهيل شرحها ومناقشتها مع الدكتور:</p>
             
             <div class="glossary-grid">
