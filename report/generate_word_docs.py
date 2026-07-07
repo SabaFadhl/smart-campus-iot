@@ -108,21 +108,14 @@ def build_final_report():
         "receives the data, validates the payload, calculates derived analytics values, and prints "
         "alerts for abnormal conditions. A Node-RED Dashboard flow visualizes live temperature, "
         "humidity, occupancy, alerts, and temperature trends.\n\n"
-        "The selected wireless model is IEEE 802.15.4 / Zigbee-like, suitable for indoor campus "
-        "sensor networks that send small periodic messages at low power. The simulator includes "
-        "packet loss, random delay, RSSI, link quality, estimated energy consumption, and battery "
-        "drain to make the communication model realistic."
+        "The selected wireless communication and network model is based on IEEE 802.15.4 / Zigbee-like specifications, which is highly suited for indoor university campus sensor networks that transmit small periodic packets at low power. To add a high degree of simulation realism, the software simulator implements packet loss rates, random propagation and queuing delays, dynamic Received Signal Strength Indicator (RSSI) levels, Link Quality Indication (LQI) metrics, cumulative energy consumption tracking (mWh), and battery depletion curves. This academic report details the design methodologies, protocol architectures, validation mechanisms, and visualization layers that compose the final system."
     )
 
     # ── Problem Statement ──
     set_heading(doc, "1. Problem Statement and Scenario", 1)
     doc.add_paragraph(
-        "University campuses include many spaces that require continuous monitoring. Classrooms "
-        "need acceptable temperature and lighting. Labs may need air quality monitoring. Offices "
-        "benefit from occupancy-based energy saving. Server rooms need fast detection of high "
-        "temperature to protect equipment.\n\n"
-        "This project uses software simulation to demonstrate a full IoT workflow without "
-        "physical hardware. The scenario is a smart campus with 7 monitored locations:"
+        "Modern university campuses contain complex physical spaces including classrooms, lecture halls, administrative offices, scientific laboratories, and sensitive server infrastructures. Each of these zones presents distinct environmental, safety, and energy efficiency profiles that require continuous monitoring. For example, lecture halls require optimal micro-climates for student attentiveness, laboratories require strict air quality index (AQI) controls to protect occupants from chemical fumes, offices benefit from occupancy-based lighting to prevent electrical waste, and server rooms require micro-second temperature warning systems to prevent thermal damage to high-density server racks.\n\n"
+        "Deploying physical hardware prototypes for validation can be prohibitively expensive, logistically complex, and time-consuming in an academic setting. Consequently, this project focuses on a comprehensive, software-driven IoT simulation platform that behaves identically to a real-world sensor deployment. The simulation models a smart campus environment consisting of seven distinct physical locations:"
     )
     add_table(doc,
         ["Device ID", "Label", "Building", "Monitoring Purpose"],
@@ -140,7 +133,7 @@ def build_final_report():
     # ── Architecture ──
     set_heading(doc, "2. IoT Architecture", 1)
     doc.add_paragraph(
-        "The project follows a four-layer IoT architecture:"
+        "To ensure modularity, scalability, and ease of maintenance, the platform follows a classic, standardized four-layer Internet of Things architecture. This logical division mimics industrial systems such as those built on Amazon Web Services (AWS) IoT Core or Microsoft Azure IoT Solutions:"
     )
     for layer in [
         ("Perception Layer",   "Python virtual devices simulate sensors for temperature, humidity, occupancy, light level, air quality, battery level, and device status."),
@@ -155,24 +148,29 @@ def build_final_report():
     # ── Wireless ──
     set_heading(doc, "3. Wireless Communication Choice", 1)
     doc.add_paragraph(
-        "The selected wireless model is IEEE 802.15.4 / Zigbee-like. Campus room sensors send "
-        "small packets at regular intervals and are often battery-powered, making Zigbee-like "
-        "low-power communication the best fit."
+        "The perception layer relies on IEEE 802.15.4 physical and MAC layer characteristics, modeled via a Zigbee-like network profile. Unlike high-throughput local area networks (such as Wi-Fi) which operate under IEEE 802.11 standards, or wide-area outdoor solutions (such as LoRaWAN), Zigbee is specifically engineered for short-range, low-power, low-data-rate mesh topologies suitable for building automation. \n\n"
+        "Sensors deployed in rooms do not require high bandwidth as they publish simple telemetry payloads containing float and integer readings. High-bandwidth protocols like Wi-Fi would cause excessive battery drain and present higher deployment overhead. LoRaWAN operates on sub-GHz frequencies (e.g., 868/915 MHz) and is optimized for long-range communication over several kilometers, making it over-engineered and legally restricted in terms of duty cycle for high-frequency indoor sampling (every 5 seconds). Zigbee's CSMA/CA channel access, mesh routing capabilities, and low-power sleep modes make it the ideal communication technology for this project. To mirror the real physical layer, the python simulator explicitly injects random queuing delays, LQI/RSSI fluctuations, packet drops, and incremental battery draw."
     )
     set_heading(doc, "Comparison with Other Wireless Types", 2)
     add_table(doc,
-        ["Feature", "Zigbee-like (Selected)", "Wi-Fi", "LoRaWAN"],
+        ["Feature", "Zigbee-like (Selected)", "Wi-Fi (IEEE 802.11)", "LoRaWAN (LoRa Alliance)"],
         [
-            ["Range",           "Short–medium indoor",   "Medium indoor",      "Very long outdoor"],
-            ["Power",           "Low ✓",                 "Higher",             "Very low"],
-            ["Data rate",       "Low–moderate",          "High",               "Very low"],
-            ["Best use",        "Indoor sensors ✓",      "High-bandwidth",     "Outdoor wide-area"],
-            ["Suitability",     "High ✓",                "Medium",             "Low–medium"],
+            ["Frequency Band",  "2.4 GHz ISM Band",      "2.4 / 5 / 6 GHz",    "Sub-GHz (868/915 MHz)"],
+            ["Indoor Range",    "10 - 100 meters",       "30 - 50 meters",     "1 - 5 kilometers"],
+            ["Power Profile",   "Extremely Low ✓",       "High (Not Battery)", "Very Low"],
+            ["Data Rate Limit", "250 kbps",              "Up to 10+ Gbps",     "Under 50 kbps"],
+            ["Typical Topology","Mesh / Star-Mesh ✓",    "Star (Access Point)","Star-of-Stars (Gateway)"],
+            ["Suitability",     "High (Optimal) ✓",      "Medium (Power-heavy)","Low (Duty Cycle Limits)"],
         ]
     )
 
     # ── MQTT ──
     set_heading(doc, "4. MQTT Topic Design and Payload Format", 1)
+    doc.add_paragraph(
+        "Message Queue Telemetry Transport (MQTT) is selected as the application layer messaging protocol. "
+        "Unlike HTTP, which utilizes a request-response architecture requiring high HTTP header overhead and TCP connection creation/teardown costs, MQTT runs on a lightweight publish-subscribe model. This makes it exceptionally suited for constrained devices. A centralized MQTT broker manages the routing of messages, allowing clients (devices) to publish telemetry to specific topics, and other clients (such as the subscriber or Node-RED) to receive them asynchronously.\n\n"
+        "To organize telemetry logically across the virtual campus, a structured, hierarchical topic design is implemented. This hierarchy allows wildcards (e.g., '+') for selective subscriptions, enabling the subscriber to capture data from all buildings, rooms, and devices through a single topic pattern:"
+    )
     doc.add_paragraph("Topic hierarchy:")
     add_code_block(doc, "campus/{building}/{room}/{deviceId}/telemetry")
     doc.add_paragraph("Example:")
@@ -205,14 +203,20 @@ def build_final_report():
 
     # ── Processing ──
     set_heading(doc, "5. Processing Logic and Rules", 1)
+    doc.add_paragraph(
+        "The edge processing layer, implemented in processing/subscriber.py, is responsible for transforming raw sensor readings into actionable intelligence. Rather than forwarding raw data directly to storage or visualization, the subscriber performs localized validation, parses payload metadata, and computes secondary derived variables. This reduces downstream server loads and provides immediate feedback in the form of alerts.\n\n"
+        "Two main derived variables are computed:\n"
+        "1. Comfort Index: Calculated using a simplified Humidex approximation: Temperature + (Humidity / 100 * 5). This index gives a more accurate indicator of thermal comfort than temperature alone.\n"
+        "2. Air Quality Status: Classified dynamically based on Indoor Air Quality (IAQ) thresholds where readings <= 80 represent 'GOOD', <= 120 represent 'MODERATE', and > 120 trigger a 'POOR' state, allowing facility managers to trigger ventilation systems."
+    )
     set_heading(doc, "Derived Values", 2)
     add_table(doc,
-        ["Derived Value", "Description"],
+        ["Derived Value", "Mathematical/Logic Description"],
         [
-            ["comfort_index",      "temperature + (humidity / 100 × 5)"],
-            ["occupancy_status",   "EMPTY or OCCUPIED"],
-            ["high_temp_flag",     "True when temperature > 35"],
-            ["air_quality_status", "GOOD / MODERATE / POOR"],
+            ["comfort_index",      "Temperature + (Humidity / 100 × 5)"],
+            ["occupancy_status",   "OCCUPIED if Occupancy > 0, otherwise EMPTY"],
+            ["high_temp_flag",     "True when Temperature > 35, otherwise False"],
+            ["air_quality_status", "GOOD (<=80), MODERATE (81-120), POOR (>120)"],
         ]
     )
     set_heading(doc, "Alert Rules", 2)
@@ -261,23 +265,23 @@ def build_final_report():
 
     # ── Security ──
     set_heading(doc, "7. Security and Reliability", 1)
-    set_heading(doc, "Security Controls", 2)
-    for ctrl in [
-        "Input validation: subscriber rejects payloads with missing or invalid fields.",
-        "Topic naming policy: only the expected topic format is accepted (campus/+/+/+/telemetry).",
-        "Sanitized logs: values are cleaned before printing to reduce log injection risk.",
-        "Optional MQTT credentials: username/password fields in config.json for private brokers.",
-        "Limited topic structure: predictable hierarchy prevents arbitrary topic publishing.",
-    ]:
-        doc.add_paragraph(ctrl, style="List Bullet")
+    doc.add_paragraph(
+        "IoT deployments face a wide range of cyber security threat vectors due to the distributed nature of sensors and the use of shared communication mediums. Common vulnerabilities include eavesdropping (sniffing telemetry data), message spoofing (publishing falsified sensor metrics), and Denial of Service (DoS) attacks targeting the broker. To address these threats in an academic context, we implement five distinct security controls:\n\n"
+        "1. Input Validation: The subscriber client checks the structure and data types of every JSON message. Any packet lacking mandatory fields or containing values outside physical bounds (e.g., negative occupancy or humidity > 100) is immediately dropped to prevent downstream database pollution.\n"
+        "2. Topic Naming Policy: The subscriber only listens to and accepts messages publishing on the strict hierarchical format (campus/{building}/{room}/{deviceId}/telemetry). Any malicious attempt to write to system-level or administrative topics is ignored.\n"
+        "3. Log Sanitization: Before printing telemetry metrics to the console or logs, all strings are sanitized to strip non-alphanumeric characters, mitigating the risk of Log Injection or Remote Code Execution (RCE) via terminal escape sequences.\n"
+        "4. Configuration Isolation: Sensitive MQTT broker credentials (username and password) are isolated inside a dedicated config.json file rather than hardcoded in the script, facilitating transition to secured TLS-enabled private brokers.\n"
+        "5. Strict Topic Isolation: By specifying the full device ID in the publisher topic, the architecture prevents a malfunctioning or compromised device from overwriting data belonging to other devices.\n"
+    )
+    
     set_heading(doc, "Reliability Features", 2)
-    for item in [
-        "Packet loss simulation (5% drop rate).",
-        "Random transmission delay (50–350 ms).",
-        "Battery drain tracking per device.",
-        "Disconnection event logging.",
-    ]:
-        doc.add_paragraph(item, style="List Bullet")
+    doc.add_paragraph(
+        "To evaluate how the network handles real-world channel impairments, the platform simulates several low-power wireless reliability scenarios:\n\n"
+        "• Packet Loss: Models a Rayleigh fading channel or path blockage by randomly dropping 5% of published telemetry packets. This tests whether the subscriber and dashboard can maintain consistent states without crashing.\n"
+        "• Propagation and Queuing Latency: Injects a variable delay (50 to 350 ms) before publishing, simulating network congestion and CSMA/CA backoff periods typical in dense Zigbee networks.\n"
+        "• Energy and Battery Depletion: Simulates battery consumption per transmission. When a device's battery level drops below 20%, it changes its status to 'LOW_BATTERY', demonstrating predictive maintenance notifications.\n"
+        "• Network Outage and Disconnection: The subscriber includes dedicated on_disconnect callback listeners to log and report broker offline events immediately, ensuring operators are alerted of network failures."
+    )
 
     # ── Testing ──
     set_heading(doc, "8. Testing and Results", 1)
