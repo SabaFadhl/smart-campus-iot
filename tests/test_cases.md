@@ -21,11 +21,11 @@
 **Manual publish example:**
 
 ```powershell
-mosquitto_pub -h broker.hivemq.com -t "campus/main_building/classroom_101/classroom_101/telemetry" -m '{\"deviceId\":\"classroom_101\",\"temperature\":25}'
+mosquitto_pub -h broker.hivemq.com -t "campus/floor_1/hall_1_1/hall_1_1/telemetry" -m '{\"deviceId\":\"hall_1_1\",\"temperature\":25}'
 ```
 
 **Expected Result:**
-- Subscriber prints a `[VALIDATION] Rejected payload` message.
+- Subscriber prints a `[VALIDATION] Rejected message` message.
 - The reason includes missing fields.
 
 ## Test Case 3: Abnormal Temperature
@@ -35,11 +35,11 @@ mosquitto_pub -h broker.hivemq.com -t "campus/main_building/classroom_101/classr
 **Manual publish example:**
 
 ```powershell
-mosquitto_pub -h broker.hivemq.com -t "campus/it_building/server_room_401/server_room_401/telemetry" -m '{\"deviceId\":\"server_room_401\",\"building\":\"it_building\",\"room\":\"server_room_401\",\"timestamp\":\"2026-06-24T12:00:00+00:00\",\"temperature\":38,\"humidity\":55,\"occupancy\":0,\"light_level\":30,\"air_quality\":70,\"battery_level\":90,\"status\":\"OK\"}'
+mosquitto_pub -h broker.hivemq.com -t "campus/it_building/server_room/server_room/telemetry" -m '{\"deviceId\":\"server_room\",\"building\":\"it_building\",\"room\":\"server_room\",\"timestamp\":\"2026-07-07T12:00:00+00:00\",\"temperature\":38,\"humidity\":55,\"occupancy\":0,\"light_level\":30,\"air_quality\":70,\"battery_level\":90,\"status\":\"OK\"}'
 ```
 
 **Expected Result:**
-- Subscriber prints `[ALERT] server_room_401: High temperature`.
+- Subscriber prints `[ALERT] Server Room: High temperature`.
 
 ## Test Case 4: Broker Disconnection
 

@@ -18,12 +18,15 @@ New-Item -ItemType Directory -Force -Path smart-campus-iot\report
 
 ## 2. Project Idea
 
-The system simulates a smart campus with four monitored locations:
+The system simulates a smart campus with seven monitored locations:
 
-- `classroom_101`
-- `lab_201`
-- `office_301`
-- `server_room_401`
+- `hall_1_1` (Hall 1.1)
+- `hall_1_2` (Hall 1.2)
+- `hall_1_3` (Hall 1.3)
+- `hall_1_4` (Hall 1.4)
+- `server_room` (Server Room)
+- `lab1` (Lab 1)
+- `office1` (Office 1)
 
 Each virtual device publishes JSON telemetry every 5 seconds. The data is sent using MQTT publish/subscribe through the HiveMQ Public Broker. A Python subscriber receives the data, validates it, calculates derived values, and prints alerts. A Node-RED flow is also included to visualize live telemetry on a dashboard.
 
@@ -102,20 +105,24 @@ campus/{building}/{room}/{deviceId}/telemetry
 Examples:
 
 ```text
-campus/main_building/classroom_101/classroom_101/telemetry
-campus/engineering_building/lab_201/lab_201/telemetry
-campus/admin_building/office_301/office_301/telemetry
-campus/it_building/server_room_401/server_room_401/telemetry
+campus/floor_1/hall_1_1/hall_1_1/telemetry
+campus/floor_1/hall_1_2/hall_1_2/telemetry
+campus/floor_1/hall_1_3/hall_1_3/telemetry
+campus/floor_1/hall_1_4/hall_1_4/telemetry
+campus/it_building/server_room/server_room/telemetry
+campus/engineering_building/lab1/lab1/telemetry
+campus/admin_building/office1/office1/telemetry
 ```
 
 ## 8. JSON Telemetry Format
 
 ```json
 {
-  "deviceId": "classroom_101",
-  "building": "main_building",
-  "room": "classroom_101",
-  "timestamp": "2026-06-24T12:00:00+00:00",
+  "deviceId": "hall_1_1",
+  "label": "Hall 1.1",
+  "building": "floor_1",
+  "room": "hall_1_1",
+  "timestamp": "2026-07-07T09:00:00+00:00",
   "temperature": 25.4,
   "humidity": 55.2,
   "occupancy": 18,
@@ -237,7 +244,7 @@ It covers:
 Manual test example using Mosquitto:
 
 ```powershell
-mosquitto_pub -h broker.hivemq.com -t "campus/it_building/server_room_401/server_room_401/telemetry" -m '{\"deviceId\":\"server_room_401\",\"building\":\"it_building\",\"room\":\"server_room_401\",\"timestamp\":\"2026-06-24T12:00:00+00:00\",\"temperature\":38,\"humidity\":55,\"occupancy\":0,\"light_level\":30,\"air_quality\":70,\"battery_level\":90,\"status\":\"OK\"}'
+mosquitto_pub -h broker.hivemq.com -t "campus/it_building/server_room/server_room/telemetry" -m '{\"deviceId\":\"server_room\",\"building\":\"it_building\",\"room\":\"server_room\",\"timestamp\":\"2026-07-07T12:00:00+00:00\",\"temperature\":38,\"humidity\":55,\"occupancy\":0,\"light_level\":30,\"air_quality\":70,\"battery_level\":90,\"status\":\"OK\"}'
 ```
 
 ## 14. Project Structure
